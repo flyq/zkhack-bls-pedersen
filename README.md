@@ -11,15 +11,14 @@ Submitting a solution
 
 [Submit a solution](https://xng1lsio92y.typeform.com/to/oUdQXKMW)
 
+run sage to get the matrix inverse:
+```bash
+sage solution.sage
+```
 
-$Generators = [[G_{1}], [G_{2}], [G_{3}], ..., [G_{256}]]$
+run rust to check the solution:
+```bash
+cargo run --release
+```
 
-
-$H(m) = \sum_{i=1}^{i=256} G_{i} \hspace{1em} \forall b_{i} \in {1}$
-
-
-$H_{1} = [b_{1,1}]G_{1} + [b_{1,2}]G_{2} + ... + [b_{1,256}]G_{n}$
-
-$H_{2} = [b_{2,1}]G_{1} + [b_{2,2}]G_{2} + ... + [b_{2,256}]G_{n}$
-
-$H_{256} = [b_{256,1}]G_{1} + [b_{256,2}]G_{2} + ... + [b_{256,256}]G_{n}$
+Writeups: https://hackmd.io/@liquan/rydVkZzcT
