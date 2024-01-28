@@ -1,9 +1,10 @@
+use ark_bls12_381::{Fr, G1Affine};
+use ark_ec::{AffineCurve, ProjectiveCurve};
 use bls_pedersen::data::puzzle_data;
 use bls_pedersen::PUZZLE_DESCRIPTION;
 use bls_pedersen::{bls::verify, hash, matrix::a_inv};
-use prompt::{puzzle, welcome};
-use ark_bls12_381::{Fr, G1Affine};
 use num_traits::identities::Zero;
+use prompt::{puzzle, welcome};
 
 fn main() {
     welcome();
@@ -14,6 +15,7 @@ fn main() {
         verify(pk, m, *sig);
     }
 
+    #[allow(unused_variables)]
     let h_m: Vec<Vec<u8>> = ms
         .iter()
         .map(|m| hash::hash_to_curve(m).0)
@@ -32,20 +34,22 @@ fn main() {
       verify(pk, m, sig);
     */
 
-    let a_inv  = a_inv();
+    let a_inv = a_inv();
     let mut q: Vec<G1Affine> = Vec::new();
     for raw in a_inv {
         let mut sum = G1Affine::zero();
         for i in 0..256 {
-            sum = sum + raw[i] * sigs[i];
+            sum = sum + sigs[i].mul(raw[i]).into_affine();
         }
         q.push(sum)
     }
     let msg = b"Rob";
     let hm = hash::hash_to_curve(msg).0;
+    let hm = u8_to_bits(&hm);
+
     let mut sig = G1Affine::zero();
     for i in 0..256 {
-        sig = sig + hm[i] * q[i];
+        sig = sig + q[i].mul(Fr::from(hm[i])).into_affine();
     }
 
     verify(pk, msg, sig);
